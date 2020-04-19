@@ -2,8 +2,10 @@ package coffeelisp.syntax
 
 import coffeelisp.env.Env
 import coffeelisp.types.Fn
+import coffeelisp.types.LispBool
 import coffeelisp.types.LispNumber
 import coffeelisp.types.LispObject
+import coffeelisp.types.LispString
 import coffeelisp.types.TypeError
 import java.lang.Exception
 
@@ -25,17 +27,14 @@ data class SymbolicExpression(val exprs: List<Expression>): Expression() {
 data class Atom(val token: String): Expression() {
     override fun eval(env: Env): LispObject {
 
-        val num = token.toLongOrNull()
-
-        if (num != null) {
-         return LispNumber(num)
-        }
-
         val type = env.find(token)
-        if (type != null) {
-            return type
-        } else {
-            throw LispError("Not found: $token. Try (definitions)")
+
+        return when {
+            type != null -> type
+            LispNumber.isType(this) -> LispNumber.toLispObject(this)
+            LispBool.isType(this) -> LispBool.toLispObject(this)
+            LispString.isType(this) -> LispString.toLispObject(this)
+            else -> throw LispError("Not found: $token. Try (definitions)")
         }
     }
 

@@ -14,7 +14,7 @@ fun repl() {
     line = getLine()
     while (line != null) {
         try {
-            println(interpret(line))
+            println(interpret(line).display())
         } catch (e: Exception) {
             println("Error: $e")
         }
