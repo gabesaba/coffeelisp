@@ -2,10 +2,14 @@ package coffeelisp.env
 
 import coffeelisp.syntax.LispError
 import coffeelisp.functions.add1
+import coffeelisp.functions.car
+import coffeelisp.functions.cdr
 import coffeelisp.functions.clear
+import coffeelisp.functions.cons
 import coffeelisp.functions.define
 import coffeelisp.functions.definitions
 import coffeelisp.functions.if27
+import coffeelisp.functions.isUnit
 import coffeelisp.functions.lambda
 import coffeelisp.functions.mul
 import coffeelisp.functions.sub1
@@ -50,6 +54,10 @@ fun createGlobalEnv(): Env {
             definitions.register(),
             clear.register(),
             type.register(),
+            cons.register(),
+            car.register(),
+            cdr.register(),
+            isUnit.register(),
             add1.register(),
             sub1.register(),
             mul.register(),

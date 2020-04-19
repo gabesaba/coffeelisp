@@ -28,7 +28,7 @@ class SyntaxTest {
     }
 
     @Test fun testEmptyList() {
-        assertEquals(s(), parseLisp("()"))
+        assertEquals(a("()"), parseLisp("()"))
     }
 
     @Test fun testSyntaxError() {

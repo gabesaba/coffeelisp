@@ -6,6 +6,7 @@ import coffeelisp.types.LispBool
 import coffeelisp.types.LispNumber
 import coffeelisp.types.LispObject
 import coffeelisp.types.LispString
+import coffeelisp.types.LispUnit
 import coffeelisp.types.TypeError
 import java.lang.Exception
 
@@ -27,17 +28,17 @@ data class SymbolicExpression(val exprs: List<Expression>): Expression() {
 data class Atom(val token: String): Expression() {
     override fun eval(env: Env): LispObject {
 
-        val type = env.find(token)
+        val symbol = env.find(token)
 
         return when {
-            type != null -> type
+            symbol != null -> symbol
             LispNumber.isType(this) -> LispNumber.toLispObject(this)
             LispBool.isType(this) -> LispBool.toLispObject(this)
             LispString.isType(this) -> LispString.toLispObject(this)
+            LispUnit.isType(this) -> LispUnit
             else -> throw LispError("Not found: $token. Try (definitions)")
         }
     }
-
 }
 
 private val identifierRegex = "\\D.*".toRegex()
