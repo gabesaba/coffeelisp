@@ -41,7 +41,13 @@ fun syntax(tokens: MutableList<String>): Expression {
             while (tokens.size > 0) {
                 val car = tokens.pop()
                 when (car) {
-                    ")" -> return SymbolicExpression(sExp)
+                    ")" -> {
+                        return if (sExp.isEmpty()) {
+                            Atom("()")
+                        } else {
+                            SymbolicExpression(sExp)
+                        }
+                    }
                     "(" -> {
                         tokens.unpop(car)
                         sExp.add(syntax(tokens))

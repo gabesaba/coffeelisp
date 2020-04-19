@@ -5,16 +5,13 @@ import coffeelisp.syntax.Atom
 import coffeelisp.syntax.Expression
 import java.math.BigInteger
 
-sealed class LispObject {
-    abstract fun type(): LispType
+interface LispObject {
+    fun type(): LispType
 
-    abstract fun display(): String
-
+    fun display(): String
 }
 
-data class LispNumber(val num: BigInteger): LispObject() {
-
-
+data class LispNumber(val num: BigInteger): LispObject {
 
     override fun display(): String {
         return num.toString()
@@ -36,7 +33,7 @@ data class LispNumber(val num: BigInteger): LispObject() {
     }
 }
 
-sealed class LispBool: LispObject() {
+sealed class LispBool: LispObject {
     override fun type()= LispType("Bool")
 
     object True: LispBool() {
@@ -63,7 +60,7 @@ sealed class LispBool: LispObject() {
     }
 }
 
-data class LispString(val s: String): LispObject() {
+data class LispString(val s: String): LispObject {
     override fun display() = s
 
     override fun type() = LispType("String")
@@ -79,7 +76,7 @@ data class LispString(val s: String): LispObject() {
     }
 }
 
-class Fn(val name: String, private val fn: (List<Expression>, Env) -> LispObject): LispObject() {
+class Fn(val name: String, private val fn: (List<Expression>, Env) -> LispObject): LispObject {
     fun apply(expressions: List<Expression>, env: Env) = fn(expressions, env)
 
     fun register(): Pair<String, Fn> = Pair(this.name.toLowerCase(), this)
@@ -89,13 +86,17 @@ class Fn(val name: String, private val fn: (List<Expression>, Env) -> LispObject
     override fun display() = "The Fn $name"
 }
 
-object LispUnit: LispObject() {
+object LispUnit: LispObject {
     override fun type() = LispType("Unit")
 
     override fun display() = "()"
+
+    fun isType(atom: Atom): Boolean {
+        return atom.token == "()"
+    }
 }
 
-data class LispType(private val name: String): LispObject() {
+data class LispType(private val name: String): LispObject {
     override fun type() = LispType("Type")
 
     override fun display() = name

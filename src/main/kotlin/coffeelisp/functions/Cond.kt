@@ -4,6 +4,7 @@ import coffeelisp.types.Fn
 import coffeelisp.types.LispBool
 import coffeelisp.syntax.LispError
 import coffeelisp.types.LispNumber
+import coffeelisp.types.LispUnit
 import coffeelisp.types.TypeError
 import java.math.BigInteger
 
@@ -28,6 +29,16 @@ val zero = Fn("zero?") { args, env ->
     }
 
     if (res == LispNumber(BigInteger.ZERO)) {
+        LispBool.True
+    } else {
+        LispBool.False
+    }
+}
+
+val isUnit = Fn("unit?") { args, env ->
+    valArgs(args, 1, "unit?")
+
+    if (args[0].eval(env) is LispUnit) {
         LispBool.True
     } else {
         LispBool.False
