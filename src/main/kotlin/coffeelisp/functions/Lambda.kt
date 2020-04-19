@@ -4,6 +4,7 @@ import coffeelisp.env.Env
 import coffeelisp.types.Fn
 import coffeelisp.syntax.SymbolicExpression
 import coffeelisp.syntax.Atom
+import coffeelisp.syntax.isIdentifier
 import coffeelisp.types.TypeError
 
 val lambda = Fn("Lambda") { outerArgs, definitionEnv ->
