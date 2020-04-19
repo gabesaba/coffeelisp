@@ -38,8 +38,10 @@ data class Atom(val token: String): Expression() {
         }
     }
 
-    fun isIdentifier() = token.matches("[a-zA-Z][A-Za-z0-9]*".toRegex())
 }
+
+private val identifierRegex = "\\D.*".toRegex()
+fun Atom.isIdentifier() = this.token.matches(identifierRegex)
 
 fun s(vararg exprs: Expression) = SymbolicExpression(exprs.toList())
 fun a(s: String) = Atom(s)

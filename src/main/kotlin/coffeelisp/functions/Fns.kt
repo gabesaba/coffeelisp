@@ -4,6 +4,7 @@ import coffeelisp.types.Fn
 import coffeelisp.syntax.LispError
 import coffeelisp.types.LispUnit
 import coffeelisp.syntax.Atom
+import coffeelisp.syntax.isIdentifier
 import coffeelisp.types.TypeError
 
 val undefinable = setOf(clear.name, definitions.name)
