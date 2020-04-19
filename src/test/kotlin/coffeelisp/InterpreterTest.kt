@@ -21,6 +21,6 @@ class InterpreterTest {
 
     @Test fun recursion() {
         interpret("(define fact (lambda (x) (if (zero? x) 1 (* x (fact (sub1 x))))))")
-        assertEquals(LispNumber(720), interpret("(fact 6)"))
+        assertEquals(LispNumber(720.toBigInteger()), interpret("(fact 6)"))
     }
 }
