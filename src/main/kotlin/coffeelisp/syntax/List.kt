@@ -5,7 +5,8 @@ import coffeelisp.types.LispObject
 import coffeelisp.types.LispUnit
 
 
-// TODO: we should represent
+// TODO: may want to unify representation
+// of these two types
 fun List<LispObject>.toCoffeeList(): LispObject {
     return if (this.isEmpty()) {
         LispUnit
