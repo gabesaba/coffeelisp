@@ -60,22 +60,6 @@ sealed class LispBool: LispObject {
     }
 }
 
-data class LispString(val s: String): LispObject {
-    override fun display() = s
-
-    override fun type() = LispType("String")
-
-    companion object {
-        fun isType(atom: Atom): Boolean {
-            return atom.token.startsWith('"') && atom.token.endsWith('"')
-        }
-
-        fun toLispObject(atom: Atom): LispObject {
-            return LispString(atom.token.substring(1, atom.token.lastIndex - 1))
-        }
-    }
-}
-
 class Fn(val name: String, private val fn: (List<Expression>, Env) -> LispObject): LispObject {
     fun apply(expressions: List<Expression>, env: Env) = fn(expressions, env)
 
