@@ -1,5 +1,6 @@
 package coffeelisp
 
+import coffeelisp.env.eval
 import coffeelisp.types.LispNumber
 import coffeelisp.types.LispType
 import coffeelisp.types.LispUnit
@@ -20,7 +21,9 @@ class InterpreterTest {
     }
 
     @Test fun recursion() {
-        interpret("(define fact (lambda (x) (if (zero? x) 1 (* x (fact (sub1 x))))))")
+        "(define zero (lambda (x) (= 0 x)))".eval()
+        "(define sub1 (lambda (x) (- x 1)))".eval()
+        "(define fact (lambda (x) (if (zero? x) 1 (* x (fact (sub1 x))))))".eval()
         assertEquals(LispNumber(720.toBigInteger()), interpret("(fact 6)"))
     }
 }

@@ -1,7 +1,7 @@
 package coffeelisp.env
 
 import coffeelisp.syntax.LispError
-import coffeelisp.functions.add1
+import coffeelisp.functions.plus
 import coffeelisp.functions.car
 import coffeelisp.functions.cdr
 import coffeelisp.functions.clear
@@ -12,7 +12,8 @@ import coffeelisp.functions.if27
 import coffeelisp.functions.isUnit
 import coffeelisp.functions.lambda
 import coffeelisp.functions.mul
-import coffeelisp.functions.sub1
+import coffeelisp.functions.minus
+import coffeelisp.functions.numEqual
 import coffeelisp.functions.type
 import coffeelisp.functions.zero
 import coffeelisp.types.LispObject
@@ -58,9 +59,10 @@ fun createGlobalEnv(): Env {
             car.register(),
             cdr.register(),
             isUnit.register(),
-            add1.register(),
-            sub1.register(),
+            plus.register(),
+            minus.register(),
             mul.register(),
+            numEqual.register(),
             zero.register()
     ))
 }
