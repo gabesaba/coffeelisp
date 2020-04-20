@@ -2,37 +2,58 @@ package coffeelisp.functions
 
 import coffeelisp.env.Env
 import coffeelisp.syntax.Expression
+import coffeelisp.syntax.LispError
 import coffeelisp.types.Fn
+import coffeelisp.types.LispBool
 import coffeelisp.types.LispNumber
 import coffeelisp.types.TypeError
 import java.math.BigInteger
 
-val add1 = Fn("add1") { args, env ->
-    valArgs(args, 1, "add1")
-    when (val res = args[0].eval(env)) {
-        is LispNumber -> LispNumber(res.num + BigInteger.ONE)
-        else -> throw TypeError("add1 expected Num")
+val plus = Fn("+") { args, env ->
+    LispNumber(getNums(args, env).fold(BigInteger.ZERO) { a, b -> a + b })
+}
+
+val minus = Fn("-") { args, env ->
+    if (args.isEmpty()) {
+        throw LispError("- expects at least 1 arg!")
     }
-}
 
-val sub1 = Fn("sub1") { args, env ->
-    when (val res = args[0].eval(env)) {
-        is LispNumber -> LispNumber(res.num - BigInteger.ONE)
-        else -> throw TypeError("sub1 expected Num")
-    }
-}
-
-val mul = Fn("*") { exprs, env ->
-    LispNumber(getNums(exprs, env).fold(BigInteger.ONE) { a, b -> a * b })
-}
-
-fun getNums(exprs: List<Expression>, env: Env): Iterable<BigInteger> {
-    return exprs.map {
-        val v = it.eval(env)
-        if (v is LispNumber) {
-            v.num
-        } else {
-            throw TypeError("Expected num")
+    val nums = getNums(args, env)
+    if (nums.size == 1) {
+        LispNumber(-nums[0])
+    } else {
+        val res = nums.subList(1, nums.size).foldRight(nums.first()) { x, acc ->
+            acc - x
         }
+        LispNumber(res)
+    }
+}
+
+val mul = Fn("*") { args, env ->
+    LispNumber(getNums(args, env).fold(BigInteger.ONE) { a, b -> a * b })
+}
+
+val numEqual = Fn("=") { args, env ->
+
+    if (args.isEmpty()) {
+        return@Fn LispBool.True
+    }
+
+    val fst = getNum(args.first(), env)
+    args.all { getNum(it, env) == fst }.toLispBool()
+}
+
+private fun getNum(expr: Expression, env: Env): BigInteger {
+    val v = expr.eval(env)
+    return if (v is LispNumber) {
+        v.num
+    } else {
+        throw TypeError("Expected num")
+    }
+}
+
+private fun getNums(args: List<Expression>, env: Env): List<BigInteger> {
+    return args.map {
+        getNum(it, env)
     }
 }

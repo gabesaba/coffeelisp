@@ -5,6 +5,10 @@ import coffeelisp.types.LispObject
 
 var globalEnv: Env = createGlobalEnv()
 
+fun String.eval(): String {
+    return interpret(this).display()
+}
+
 fun interpret(s: String): LispObject {
     return parseLisp(s).eval(globalEnv)
 }
