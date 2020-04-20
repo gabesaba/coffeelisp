@@ -17,7 +17,7 @@ val lambda = Fn("Lambda") { outerArgs, definitionEnv ->
     val formals = createFormals(car)
 
     val lambdaFn = outerArgs[1]
-    Fn("Lambda") { args, callingEnv ->
+    Fn("Anon") { args, callingEnv ->
 
         // formals.validate(args)
         // valArgs(args, formals.size, "Lambda")

@@ -6,4 +6,5 @@ build
 
 # Ignore IntelliJ
 .idea/
+out/
 
