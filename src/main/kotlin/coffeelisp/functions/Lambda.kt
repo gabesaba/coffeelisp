@@ -18,14 +18,8 @@ val lambda = Fn("Lambda") { outerArgs, definitionEnv ->
 
     val lambdaFn = outerArgs[1]
     Fn("Anon") { args, callingEnv ->
-
-        // formals.validate(args)
-        // valArgs(args, formals.size, "Lambda")
-
-
-        val objects = args.map { it.eval(callingEnv) }
-        val newEnv = formals.bindArgs(objects, definitionEnv)
-
+        val lispObjects = args.map { it.eval(callingEnv) }
+        val newEnv = formals.bindArgs(lispObjects, definitionEnv)
         lambdaFn.eval(newEnv)
     }
 }
@@ -63,16 +57,15 @@ class VarArgs(atom: Atom): Formals() {
 
     private val symbol = atom.token
 
-    override fun bindArgs(objects: List<LispObject>, definitionEnv: Env): Env {
+    override fun bindArgs(lispObjects: List<LispObject>, definitionEnv: Env): Env {
         val newEnv = Env(definitionEnv)
-        val argList = objects.toCoffeeList()
+        val argList = lispObjects.toCoffeeList()
         newEnv.set(symbol, argList)
         return newEnv
     }
 }
 
 fun createFormals(expr: Expression): Formals {
-
     return when (expr) {
         is SymbolicExpression -> {
            FixedArgs(expr)
