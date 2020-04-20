@@ -1,5 +1,7 @@
 package coffeelisp.env
 
+import coffeelisp.errors.MAX_RECUSION_DEPTH
+import coffeelisp.errors.RecursionDepthExceeded
 import coffeelisp.functions.apply
 import coffeelisp.syntax.LispError
 import coffeelisp.functions.plus
@@ -37,16 +39,16 @@ private val defaultRegistry = mapOf(
         numEqual.register()
 )
 
-class Env(private val parent: Env? = null, private val registry: MutableMap<String, LispObject> = mutableMapOf()) {
-    private val level: Int = if (parent == null) {
-        0
-    } else {
-        parent.level + 1
-    }
+class Env(private val parent: Env? = null,
+          private val registry: MutableMap<String, LispObject> = mutableMapOf(),
+          val level: Int = 0) {
 
     init {
-        if (level > 100) {
-            throw LispError("Exceeded stack depth")
+        // if we have a parent, level should not be default
+        require(parent == null || level > 0)
+
+        if (level > MAX_RECUSION_DEPTH) {
+            throw RecursionDepthExceeded()
         }
     }
 
