@@ -7,6 +7,11 @@ repositories {
     jcenter()
 }
 
+
+group = "org.gabe.coffee"
+
+version = "1.0"
+
 dependencies {
     implementation(kotlin("stdlib"))
 
