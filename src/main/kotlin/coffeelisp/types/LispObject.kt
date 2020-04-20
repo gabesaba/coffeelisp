@@ -2,13 +2,17 @@ package coffeelisp.types
 
 import coffeelisp.env.Env
 import coffeelisp.syntax.Atom
-import coffeelisp.syntax.Expression
+import coffeelisp.syntax.Lisp
 import java.math.BigInteger
 
-interface LispObject {
+interface LispObject: Lisp {
     fun type(): LispType
 
     fun display(): String
+
+    override fun eval(env: Env): LispObject {
+        return this
+    }
 }
 
 data class LispNumber(val num: BigInteger): LispObject {
@@ -60,8 +64,8 @@ sealed class LispBool: LispObject {
     }
 }
 
-class Fn(val name: String, private val fn: (List<Expression>, Env) -> LispObject): LispObject {
-    fun apply(expressions: List<Expression>, env: Env) = fn(expressions, env)
+class Fn(val name: String, private val fn: (List<Lisp>, Env) -> LispObject): LispObject {
+    fun apply(expressions: List<Lisp>, env: Env) = fn(expressions, env)
 
     fun register(): Pair<String, Fn> = Pair(this.name.toLowerCase(), this)
 
