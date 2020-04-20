@@ -17,16 +17,19 @@ val lambda = Fn("Lambda") { outerArgs, definitionEnv ->
     val formals = createFormals(car)
 
     val lambdaFn = outerArgs[1]
+
     Fn("Anon") { args, callingEnv ->
         val lispObjects = args.map { it.eval(callingEnv) }
-        val newEnv = formals.bindArgs(lispObjects, definitionEnv)
+
+        val recursionLevel = callingEnv.level + 1
+        val newEnv = formals.bindArgs(lispObjects, definitionEnv, recursionLevel)
         lambdaFn.eval(newEnv)
     }
 }
 
 // https://www.gnu.org/software/mit-scheme/documentation/mit-scheme-ref/Lambda-Expressions.html
 sealed class Formals {
-    abstract fun bindArgs(objects: List<LispObject>, definitionEnv: Env): Env
+    abstract fun bindArgs(lispObjects: List<LispObject>, definitionEnv: Env, level: Int): Env
 }
 
 // Syntactic form for fixed-num args (a b c)
@@ -39,10 +42,10 @@ class FixedArgs(symbolicExpression: SymbolicExpression): Formals() {
             throw TypeError("Lambda expects identifiers as formals")
         }
     }
-    override fun bindArgs(objects: List<LispObject>, definitionEnv: Env): Env {
-        val newEnv = Env(definitionEnv)
-        valArgs(objects, formals.size, "Lambda")
-        for ((formal, arg) in formals.zip(objects)) {
+    override fun bindArgs(lispObjects: List<LispObject>, definitionEnv: Env, level: Int): Env {
+        val newEnv = Env(definitionEnv, level = level)
+        valArgs(lispObjects, formals.size, "Lambda")
+        for ((formal, arg) in formals.zip(lispObjects)) {
             newEnv.set(formal.token, arg)
         }
         return newEnv
@@ -57,8 +60,8 @@ class VarArgs(atom: Atom): Formals() {
 
     private val symbol = atom.token
 
-    override fun bindArgs(lispObjects: List<LispObject>, definitionEnv: Env): Env {
-        val newEnv = Env(definitionEnv)
+    override fun bindArgs(lispObjects: List<LispObject>, definitionEnv: Env, level: Int): Env {
+        val newEnv = Env(definitionEnv, level = level)
         val argList = lispObjects.toCoffeeList()
         newEnv.set(symbol, argList)
         return newEnv
