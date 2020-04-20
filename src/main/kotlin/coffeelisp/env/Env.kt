@@ -1,5 +1,6 @@
 package coffeelisp.env
 
+import coffeelisp.functions.apply
 import coffeelisp.syntax.LispError
 import coffeelisp.functions.plus
 import coffeelisp.functions.car
@@ -51,6 +52,7 @@ fun createGlobalEnv(): Env {
     return Env(registry = mutableMapOf(
             define.register(),
             lambda.register(),
+            apply.register(),
             if27.register(),
             definitions.register(),
             clear.register(),
