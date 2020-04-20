@@ -7,10 +7,10 @@ import coffeelisp.syntax.Atom
 import coffeelisp.syntax.isIdentifier
 import coffeelisp.types.TypeError
 
-val undefinable = setOf(clear.name, definitions.name)
+private val undefinable = setOf(reset.name, definitions.name)
 val define = Fn("Define") { exprs, env ->
     when {
-        !env.isGlobalEnv() -> throw LispError("Must call Define at top level")
+        !env.isRootEnv() -> throw LispError("Must call Define at top level")
         2 != exprs.size -> throw LispError("Define expects 2 args")
     }
 

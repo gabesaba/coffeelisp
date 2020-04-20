@@ -4,11 +4,12 @@ import coffeelisp.types.Fn
 import coffeelisp.syntax.LispError
 import coffeelisp.types.LispString
 import coffeelisp.types.LispUnit
-import coffeelisp.env.globalEnv
-import coffeelisp.env.createGlobalEnv
 
-val clear = Fn("clear!") { _, _ ->
-    globalEnv = createGlobalEnv()
+val reset = Fn("reset!") { _, env ->
+    if (!env.isRootEnv()) {
+        throw LispError("Must be called from root env")
+    }
+    env.initialize()
     LispUnit
 }
 
