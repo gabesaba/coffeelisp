@@ -10,9 +10,11 @@ import coffeelisp.types.LispUnit
 import coffeelisp.types.TypeError
 import java.lang.Exception
 
-sealed class Expression {
-    abstract fun eval(env: Env): LispObject
+interface Lisp {
+    fun eval(env: Env): LispObject
 }
+
+sealed class Expression: Lisp
 
 data class SymbolicExpression(val exprs: List<Expression>): Expression() {
     override fun eval(env: Env): LispObject {

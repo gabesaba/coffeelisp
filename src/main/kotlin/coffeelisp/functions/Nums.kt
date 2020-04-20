@@ -2,6 +2,7 @@ package coffeelisp.functions
 
 import coffeelisp.env.Env
 import coffeelisp.syntax.Expression
+import coffeelisp.syntax.Lisp
 import coffeelisp.syntax.LispError
 import coffeelisp.types.Fn
 import coffeelisp.types.LispBool
@@ -43,7 +44,7 @@ val numEqual = Fn("=") { args, env ->
     args.all { getNum(it, env) == fst }.toLispBool()
 }
 
-private fun getNum(expr: Expression, env: Env): BigInteger {
+private fun getNum(expr: Lisp, env: Env): BigInteger {
     val v = expr.eval(env)
     return if (v is LispNumber) {
         v.num
@@ -52,7 +53,7 @@ private fun getNum(expr: Expression, env: Env): BigInteger {
     }
 }
 
-private fun getNums(args: List<Expression>, env: Env): List<BigInteger> {
+private fun getNums(args: List<Lisp>, env: Env): List<BigInteger> {
     return args.map {
         getNum(it, env)
     }
