@@ -1,32 +1,16 @@
 package coffeelisp.env
 
 import coffeelisp.syntax.parseLisp
-import coffeelisp.types.LispObject
 
-var globalEnv: Env = createGlobalEnv()
+class Interpreter {
+    private var env = createEnv()
 
-fun String.eval(): String {
-    return interpret(this).display()
+    fun eval(lisp: String) = lisp.eval(env)
 }
 
-fun interpret(s: String): LispObject {
-    return parseLisp(s).eval(globalEnv)
-}
+// hack for when we're too lazy to create an interpreter :)
+private val defaultEnv = createEnv()
 
-fun repl() {
-    var line: String?
-    line = getLine()
-    while (line != null) {
-        try {
-            println(interpret(line).display())
-        } catch (e: Exception) {
-            println("Error: $e")
-        }
-        line = getLine()
-    }
-}
-
-private fun getLine(): String? {
-    print("-> ")
-    return readLine()
+fun String.eval(env: Env = defaultEnv): String {
+    return parseLisp(this).eval(env).display()
 }

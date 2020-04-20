@@ -5,19 +5,37 @@ import coffeelisp.syntax.LispError
 import coffeelisp.functions.plus
 import coffeelisp.functions.car
 import coffeelisp.functions.cdr
-import coffeelisp.functions.clear
 import coffeelisp.functions.cons
 import coffeelisp.functions.define
 import coffeelisp.functions.definitions
 import coffeelisp.functions.if27
 import coffeelisp.functions.isUnit
 import coffeelisp.functions.lambda
+import coffeelisp.functions.library
 import coffeelisp.functions.mul
 import coffeelisp.functions.minus
 import coffeelisp.functions.numEqual
+import coffeelisp.functions.reset
 import coffeelisp.functions.type
-import coffeelisp.functions.zero
 import coffeelisp.types.LispObject
+
+private val defaultRegistry = mapOf(
+        define.register(),
+        lambda.register(),
+        apply.register(),
+        if27.register(),
+        definitions.register(),
+        reset.register(),
+        type.register(),
+        cons.register(),
+        car.register(),
+        cdr.register(),
+        isUnit.register(),
+        plus.register(),
+        minus.register(),
+        mul.register(),
+        numEqual.register()
+)
 
 class Env(private val parent: Env? = null, private val registry: MutableMap<String, LispObject> = mutableMapOf()) {
     private val level: Int = if (parent == null) {
@@ -45,26 +63,23 @@ class Env(private val parent: Env? = null, private val registry: MutableMap<Stri
         return registry.keys.union(parent?.getDefinitions() ?: emptySet())
     }
 
-    fun isGlobalEnv() = parent == null
+    fun isRootEnv() = parent == null
+
+    fun initialize(): Env {
+        require(isRootEnv())
+        registry.clear()
+        registry.putAll(defaultRegistry)
+        loadLibrary()
+        return this
+    }
+
+    private fun loadLibrary() {
+        library.forEach {
+            it.eval(this)
+        }
+    }
 }
 
-fun createGlobalEnv(): Env {
-    return Env(registry = mutableMapOf(
-            define.register(),
-            lambda.register(),
-            apply.register(),
-            if27.register(),
-            definitions.register(),
-            clear.register(),
-            type.register(),
-            cons.register(),
-            car.register(),
-            cdr.register(),
-            isUnit.register(),
-            plus.register(),
-            minus.register(),
-            mul.register(),
-            numEqual.register(),
-            zero.register()
-    ))
+fun createEnv(): Env {
+    return Env().initialize()
 }

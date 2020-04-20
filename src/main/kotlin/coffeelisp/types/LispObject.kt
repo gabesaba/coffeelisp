@@ -71,7 +71,7 @@ class Fn(val name: String, private val fn: (List<Lisp>, Env) -> LispObject): Lis
 
     override fun type() = LispType("Fn")
 
-    override fun display() = "The Fn $name"
+    override fun display() = "Fn"
 }
 
 object LispUnit: LispObject {
