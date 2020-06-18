@@ -1,16 +1,18 @@
 package coffeelisp.functions
 
 import coffeelisp.env.eval
+import coffeelisp.syntax.LispError
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFails
+import kotlin.test.assertFailsWith
 
 class RandomTest {
     @Test
     fun testOverBound() {
         val maxInt = Int.MAX_VALUE
-        assertFails {
-            "(random (+ $maxInt 1)".eval()
+        assertFailsWith(LispError::class) {
+            "(random (+ $maxInt 1))".eval()
         }
     }
 
