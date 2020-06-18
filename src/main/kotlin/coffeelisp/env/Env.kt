@@ -17,6 +17,7 @@ import coffeelisp.functions.library
 import coffeelisp.functions.mul
 import coffeelisp.functions.minus
 import coffeelisp.functions.numEqual
+import coffeelisp.functions.random
 import coffeelisp.functions.reset
 import coffeelisp.functions.type
 import coffeelisp.types.LispObject
@@ -36,7 +37,8 @@ private val defaultRegistry = mapOf(
         plus.register(),
         minus.register(),
         mul.register(),
-        numEqual.register()
+        numEqual.register(),
+        random.register()
 )
 
 class Env(private val parent: Env? = null,
