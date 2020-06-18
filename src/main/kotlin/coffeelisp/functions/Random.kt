@@ -14,7 +14,7 @@ val random = Fn("Random") { exprs, env ->
     val limit = exprs[0].eval(env)
 
     return@Fn when {
-        limit !is LispNumber -> throw LispError("Expect numerical argument")
+        limit !is LispNumber -> throw LispError("Expects numerical argument")
         limit.num > Int.MAX_VALUE.toBigInteger() || limit.num < BigInteger.ONE -> throw LispError("Out of bounds")
         else -> {
             val asInt = limit.num.toInt()
