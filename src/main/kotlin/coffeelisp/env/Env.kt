@@ -3,7 +3,6 @@ package coffeelisp.env
 import coffeelisp.errors.MAX_RECUSION_DEPTH
 import coffeelisp.errors.RecursionDepthExceeded
 import coffeelisp.functions.apply
-import coffeelisp.syntax.LispError
 import coffeelisp.functions.plus
 import coffeelisp.functions.car
 import coffeelisp.functions.cdr
@@ -11,6 +10,11 @@ import coffeelisp.functions.cons
 import coffeelisp.functions.define
 import coffeelisp.functions.definitions
 import coffeelisp.functions.if27
+import coffeelisp.functions.isBoolean
+import coffeelisp.functions.isConsCell
+import coffeelisp.functions.isFn
+import coffeelisp.functions.isNumber
+import coffeelisp.functions.isString
 import coffeelisp.functions.isUnit
 import coffeelisp.functions.lambda
 import coffeelisp.functions.library
@@ -19,21 +23,24 @@ import coffeelisp.functions.minus
 import coffeelisp.functions.numEqual
 import coffeelisp.functions.random
 import coffeelisp.functions.reset
-import coffeelisp.functions.type
 import coffeelisp.types.LispObject
 
 private val defaultRegistry = mapOf(
         define.register(),
         lambda.register(),
+        isBoolean.register(),
+        isConsCell.register(),
+        isFn.register(),
+        isNumber.register(),
+        isString.register(),
+        isUnit.register(),
         apply.register(),
         if27.register(),
         definitions.register(),
         reset.register(),
-        type.register(),
         cons.register(),
         car.register(),
         cdr.register(),
-        isUnit.register(),
         plus.register(),
         minus.register(),
         mul.register(),

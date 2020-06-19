@@ -1,21 +1,10 @@
 package coffeelisp.types
 
-import coffeelisp.assertEquals
 import coffeelisp.syntax.Atom
 import org.junit.Test
 import kotlin.test.assertTrue
 
 class StringTest {
-    @Test
-    fun testTypeString() {
-        """
-            ""
-        """.assertString()
-
-        """
-            "hello"
-        """.assertString()
-    }
 
     @Test
     fun testIsString() {
@@ -33,10 +22,5 @@ class StringTest {
                     """.trimIndent())) as LispString)
 
         kotlin.test.assertEquals(LispString("Hello"), lispString)
-    }
-
-
-    private fun String.assertString() {
-        "(type? $this)".assertEquals("String")
     }
 }

@@ -2,7 +2,7 @@ package coffeelisp.syntax
 
 import coffeelisp.env.Env
 import coffeelisp.types.Fn
-import coffeelisp.types.LispBool
+import coffeelisp.types.LispBoolean
 import coffeelisp.types.LispNumber
 import coffeelisp.types.LispObject
 import coffeelisp.types.LispString
@@ -22,7 +22,7 @@ data class SymbolicExpression(val exprs: List<Expression>): Expression() {
         return if (fn is Fn) {
             fn.apply(exprs.subList(1, exprs.size), env)
         } else {
-            throw TypeError("Expected function, got ${fn.type()}")
+            throw TypeError("Expected function, got ${fn.typeName}")
         }
     }
 }
@@ -35,7 +35,7 @@ data class Atom(val token: String): Expression() {
         return when {
             symbol != null -> symbol
             LispNumber.isType(this) -> LispNumber.toLispObject(this)
-            LispBool.isType(this) -> LispBool.toLispObject(this)
+            LispBoolean.isType(this) -> LispBoolean.toLispObject(this)
             LispString.isType(this) -> LispString.toLispObject(this)
             LispUnit.isType(this) -> LispUnit
             else -> throw LispError("Not found: $token. Try (definitions)")

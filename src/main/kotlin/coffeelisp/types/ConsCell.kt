@@ -1,7 +1,8 @@
 package coffeelisp.types
 
 class ConsCell(val car: LispObject, val cdr: LispObject): LispObject {
-    override fun type() = LispType("Cons Cell")
+
+    override val typeName = "Cons Cell"
 
     override fun display(): String {
         return display(true)
