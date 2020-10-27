@@ -5,11 +5,6 @@ import org.junit.Test
 
 class UnitTest {
     @Test
-    fun testType() {
-        "(type? ())".assertEquals("Unit")
-    }
-
-    @Test
     fun testIsUnit() {
         "(unit? ())".assertEquals("#t")
     }

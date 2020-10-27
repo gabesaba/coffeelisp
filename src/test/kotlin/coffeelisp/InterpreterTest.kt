@@ -13,13 +13,6 @@ class InterpreterTest {
     }
 
     @Test
-    fun type() {
-        "(type? type?)".assertEquals("Fn")
-        "(type? (type? 5))".assertEquals("Type")
-        "(type? (type? type?))".assertEquals("Type")
-    }
-
-    @Test
     fun recursion() {
         "(define zero? (lambda (x) (= 0 x)))".eval()
         "(define sub1 (lambda (x) (- x 1)))".eval()

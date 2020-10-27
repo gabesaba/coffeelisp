@@ -5,7 +5,7 @@ import coffeelisp.syntax.Atom
 data class LispString(val s: String): LispObject {
     override fun display() = s
 
-    override fun type() = LispType("String")
+    override val typeName = "String"
 
     companion object {
         fun isType(atom: Atom): Boolean {

@@ -1,13 +1,13 @@
 package coffeelisp.functions
 
 import coffeelisp.env.Env
-import coffeelisp.syntax.Expression
 import coffeelisp.syntax.Lisp
 import coffeelisp.syntax.LispError
 import coffeelisp.types.Fn
-import coffeelisp.types.LispBool
+import coffeelisp.types.LispBoolean
 import coffeelisp.types.LispNumber
 import coffeelisp.types.TypeError
+import coffeelisp.types.toLispBoolean
 import java.math.BigInteger
 
 val plus = Fn("+") { args, env ->
@@ -37,11 +37,11 @@ val mul = Fn("*") { args, env ->
 val numEqual = Fn("=") { args, env ->
 
     if (args.isEmpty()) {
-        return@Fn LispBool.True
+        return@Fn LispBoolean.True
     }
 
     val fst = getNum(args.first(), env)
-    args.all { getNum(it, env) == fst }.toLispBool()
+    args.all { getNum(it, env) == fst }.toLispBoolean()
 }
 
 private fun getNum(expr: Lisp, env: Env): BigInteger {
