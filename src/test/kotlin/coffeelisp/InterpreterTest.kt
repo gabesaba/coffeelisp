@@ -34,4 +34,11 @@ class InterpreterTest {
             "(recur)".eval()
         }
     }
+
+    @Test
+    fun testEvalsToUnit() {
+        "".assertEquals("()")
+        "            ".assertEquals("()")
+        "()".assertEquals("()")
+    }
 }
