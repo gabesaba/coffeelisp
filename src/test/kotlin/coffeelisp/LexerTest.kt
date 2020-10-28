@@ -17,7 +17,18 @@ class LexerText {
         assertEquals(listOf("(", "+", "5", "5", ")"), res)
     }
 
+    @Test fun testString() {
+        val res = lex("\"helloworld\"")
+        assertEquals(listOf("\"helloworld\""), res)
+    }
+
+    @Test fun testStringWithSpaces() {
+        val res = lex("\"hello world haha\"")
+        assertEquals(listOf("\"hello world haha\""), res)
+    }
+
     @Test fun testEmpty() {
-        assertFailsWith(SyntaxError::class) { lex("") }
+        val res = lex("")
+        assertEquals(listOf(), res)
     }
 }

@@ -1,5 +1,7 @@
 package coffeelisp.syntax
 
+import java.lang.StringBuilder
+
 fun parseLisp(s: String): Expression {
 
     val tokens = lex(s).toMutableList()
@@ -13,15 +15,46 @@ fun parseLisp(s: String): Expression {
 }
 
 fun lex(lisp: String): List<String> {
-    if (lisp == "") {
-        throw SyntaxError()
+    var pos = 0
+    val result = mutableListOf<String>()
+
+    val token = StringBuilder()
+    fun flush() {
+        if (token.isNotEmpty()) {
+            result.add(token.toString())
+            token.clear()
+        }
     }
 
-    return lisp.replace("(", " ( ")
-            .replace(")", " ) ")
-            .replace("\\s+".toRegex(), " ")
-            .trim()
-            .split(" ")
+    while (pos < lisp.length) {
+        val c = lisp[pos]
+        when {
+            c.isWhitespace() -> {
+                flush()
+                pos += 1
+            }
+            c == '(' || c == ')' -> {
+                flush()
+                result.add(c.toString())
+                pos += 1
+            }
+            c == '"' -> {
+                flush()
+                val end = lisp.indexOf('"', pos + 1)
+                if (end == -1) {
+                    throw SyntaxError()
+                }
+                result.add(lisp.substring(pos, end + 1))
+                pos = end + 1
+            }
+            else -> {
+                token.append(c)
+                pos += 1
+            }
+        }
+    }
+    flush()
+    return result
 }
 
 fun <T> MutableList<T>.pop(): T {
@@ -33,6 +66,9 @@ fun <T> MutableList<T>.unpop(t: T) {
 }
 
 fun syntax(tokens: MutableList<String>): Expression {
+    if (tokens.isEmpty()) {
+        return unitAtom
+    }
 
     when (val car = tokens.pop()) {
         ")" -> throw SyntaxError()
@@ -43,7 +79,7 @@ fun syntax(tokens: MutableList<String>): Expression {
                 when (car) {
                     ")" -> {
                         return if (sExp.isEmpty()) {
-                            Atom("()")
+                            unitAtom
                         } else {
                             SymbolicExpression(sExp)
                         }

@@ -15,6 +15,10 @@ class StringTest {
         """
             "hello"
         """.assertString()
+
+        """
+            "hello world"
+        """.assertString()
     }
 
     @Test
@@ -34,7 +38,6 @@ class StringTest {
 
         kotlin.test.assertEquals(LispString("Hello"), lispString)
     }
-
 
     private fun String.assertString() {
         "(type? $this)".assertEquals("String")

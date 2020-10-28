@@ -43,6 +43,8 @@ data class Atom(val token: String): Expression() {
     }
 }
 
+val unitAtom = Atom("()")
+
 private val identifierRegex = "\\D.*".toRegex()
 fun Atom.isIdentifier() = this.token.matches(identifierRegex)
 

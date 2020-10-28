@@ -3,7 +3,7 @@ package coffeelisp.types
 import coffeelisp.syntax.Atom
 
 data class LispString(val s: String): LispObject {
-    override fun display() = s
+    override fun display() = "\"$s\""
 
     override fun type() = LispType("String")
 
