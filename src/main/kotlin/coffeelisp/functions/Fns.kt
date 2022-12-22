@@ -17,7 +17,7 @@ val define = Fn("Define") { exprs, env ->
     val car = exprs[0]
     if (car is Atom && car.isIdentifier()) {
 
-        if (undefinable.contains(car.token.toLowerCase())) {
+        if (undefinable.contains(car.token.lowercase())) {
             throw LispError("Cannot redefine ${car.token}")
         }
         val res = exprs[1].eval(env)

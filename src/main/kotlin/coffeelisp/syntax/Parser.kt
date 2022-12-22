@@ -31,12 +31,12 @@ fun lex(lisp: String): List<String> {
         when {
             c.isWhitespace() -> {
                 flush()
-                pos += 1
+                ++pos
             }
             c == '(' || c == ')' -> {
                 flush()
                 result.add(c.toString())
-                pos += 1
+                ++pos
             }
             c == '"' -> {
                 flush()
@@ -49,7 +49,7 @@ fun lex(lisp: String): List<String> {
             }
             else -> {
                 token.append(c)
-                pos += 1
+                ++pos
             }
         }
     }
@@ -70,7 +70,7 @@ fun syntax(tokens: MutableList<String>): Expression {
         return unitAtom
     }
 
-    when (val car = tokens.pop()) {
+    when (val token = tokens.pop()) {
         ")" -> throw SyntaxError()
         "(" -> {
             val sExp = mutableListOf<Expression>()
@@ -92,7 +92,7 @@ fun syntax(tokens: MutableList<String>): Expression {
                 }
             }
         }
-        else -> return Atom(car)
+        else -> return Atom(token)
     }
     throw SyntaxError()
 }

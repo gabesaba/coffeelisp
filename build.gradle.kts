@@ -1,10 +1,10 @@
 plugins {
-    kotlin("jvm") version "1.4.10"
+    kotlin("jvm") version "1.7.21"
     application
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 
@@ -13,12 +13,10 @@ group = "org.gabe.coffee"
 version = "1.0"
 
 dependencies {
-    implementation(kotlin("stdlib"))
-
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 }
 
 application {
-    mainClassName = "coffeelisp.MainKt"
+    mainClass.set("coffeelisp.MainKt")
 }

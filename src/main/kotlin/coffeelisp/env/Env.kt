@@ -55,12 +55,12 @@ class Env(private val parent: Env? = null,
     }
 
     fun find(symbol: String): LispObject? {
-        val symbolLower = symbol.toLowerCase()
+        val symbolLower = symbol.lowercase()
         return registry[symbolLower]?: parent?.find(symbolLower)
     }
 
     fun set(symbol: String, lispObject: LispObject) {
-        registry[symbol.toLowerCase()] = lispObject
+        registry[symbol.lowercase()] = lispObject
     }
 
     fun getDefinitions(): Set<String> {

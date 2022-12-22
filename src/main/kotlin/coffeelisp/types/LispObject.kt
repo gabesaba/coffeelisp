@@ -67,7 +67,7 @@ sealed class LispBool: LispObject {
 class Fn(val name: String, private val fn: (List<Lisp>, Env) -> LispObject): LispObject {
     fun apply(expressions: List<Lisp>, env: Env) = fn(expressions, env)
 
-    fun register(): Pair<String, Fn> = Pair(this.name.toLowerCase(), this)
+    fun register(): Pair<String, Fn> = Pair(this.name.lowercase(), this)
 
     override fun type() = LispType("Fn")
 
